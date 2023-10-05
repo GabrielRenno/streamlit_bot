@@ -222,7 +222,7 @@ def is_duplicate_conversation(email, question, answer):
 def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question and the chatbot will reply. The chatbot uses GPT-4 to answer questions about the Col-legi Sant Miquel in Barcelona. This is the first version in test.")
-    #st.image("/Users/gabrielrenno/Documents/wpp_chatbot/WhatsAppBot/image.png", use_column_width=True)
+    st.image("/Users/gabrielrenno/Documents/wpp_chatbot/WhatsAppBot/image.png", use_column_width=True)
 
     question = st.text_input("Ask a question:", key='question_input')
 

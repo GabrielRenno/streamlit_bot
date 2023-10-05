@@ -20,8 +20,7 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.embeddings import HuggingFaceEmbeddings
 
 from flask import Flask, request, jsonify
-# Pip install tiktoken
-!pip install tiktoken
+
 from twilio.rest import Client
 import requests
 import time

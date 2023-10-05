@@ -29,22 +29,20 @@ import pandas as pd
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
-# Credentials
-ASSEMBLYAI_API_KEY = st.secrets.api_keys.assemblyai_api_key
-OPENAI_API_KEY = st.secrets.api_keys.openai_api_key
-openai.api_key = OPENAI_API_KEY
+
+openai.api_key = st.secrets[OPENAI_API_KEY]
 
 # -------------------------------------------------------------------------------------------
 # --------------------------------------- Import Keys ---------------------------------------
 # Load environment variables
 
-base_url = "https://api.assemblyai.com/v2"
+#base_url = "https://api.assemblyai.com/v2"
 
-headers = {
-    "authorization": ASSEMBLYAI_API_KEY
-}
+#headers = {
+   # "authorization": #ASSEMBLYAI_API_KEY
+#}
 
-load_dotenv()
+#load_dotenv()
 
 # -------------------------------------------------------------------------------------------
 # --------------------------------------- Create Vectordb -----------------------------------
@@ -62,15 +60,15 @@ def create_vectordb(url):
     splits = r_splitter.split_text(docs[0].page_content)
 
     # Create Embeddings
-    model_name = "sentence-transformers/all-mpnet-base-v2"
-    model_kwargs = {'device': 'cpu'}
-    encode_kwargs = {'normalize_embeddings': False}
-    embeddings = HuggingFaceEmbeddings(
-        model_name=model_name,
-        model_kwargs=model_kwargs,
-        encode_kwargs=encode_kwargs,
-    )
-    # embeddings = OpenAIEmbeddings()
+    #model_name = "sentence-transformers/all-mpnet-base-v2"
+    #model_kwargs = {'device': 'cpu'}
+    #encode_kwargs = {'normalize_embeddings': False}
+    #embeddings = HuggingFaceEmbeddings(
+     #   model_name=model_name,
+      #  model_kwargs=model_kwargs,
+       # encode_kwargs=encode_kwargs,
+    #)
+    embeddings = OpenAIEmbeddings()
 
     # Create Vector Database
     vectordb = FAISS.from_texts(texts=splits, embedding=embeddings)
@@ -120,7 +118,7 @@ def run_agent(agent, question):
 # --------------------------------------------------------------------------------------------
 # --------------------------------------- Voicenote to text -----------------------------------------
 
-def voicenote(upload_url):
+#def voicenote(upload_url):
     data = {
         "audio_url": upload_url  # You can also use a URL to an audio or video file on the web
     }
@@ -147,7 +145,7 @@ def voicenote(upload_url):
 
 # ---------------------------------------- Data Collection ------------------------------------------
 
-def data_collection(answer):
+#def data_collection(answer):
     num_media = request.values.get('NumMedia', '')
     sms_id = request.values.get('SmsSid', '')
     wa_id = request.values.get('WaId', '')

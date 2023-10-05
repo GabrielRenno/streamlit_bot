@@ -104,7 +104,7 @@ def run_agent(agent, question):
 
 url = f"""https://www.csm.cat/"""
 vector_db = create_vectordb([url])
-model = "gpt-3.5-turbo"
+model = "gpt-4" #"gpt-3.5-turbo"
 template = """You are a helpful chatbot, named RSLT, designed to assist users with inquiries related to Collegi Sant Miquel, a reputable school in Barcelona. 
 You provide detailed responses based on the information available on the school's official website. 
 Your goal is to engage in a friendly and professional conversation, answering questions, guiding, and providing recommendations to users. 

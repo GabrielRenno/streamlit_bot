@@ -1,4 +1,3 @@
-
 import os
 
 # ------------------------------------- Import packages ---------------------------------------
@@ -30,7 +29,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+
 
 # -------------------------------------------------------------------------------------------
 # --------------------------------------- Import Keys ---------------------------------------
@@ -68,7 +67,7 @@ def create_vectordb(url):
       #  model_kwargs=model_kwargs,
        # encode_kwargs=encode_kwargs,
     #)
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
 
     # Create Vector Database
     vectordb = FAISS.from_texts(texts=splits, embedding=embeddings)
@@ -82,7 +81,7 @@ def create_agent(vectordb, model, template):
     vectordb = vectordb
 
     # Create ChatOpenAI instance
-    llm = ChatOpenAI(model_name=model, temperature=0)
+    llm = ChatOpenAI(model_name=model, temperature=0,openai_api_key=st.secrets["OPENAI_API_KEY"])
 
     # Build prompt
     template = template

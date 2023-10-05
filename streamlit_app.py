@@ -29,21 +29,6 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
 
-
-
-# -------------------------------------------------------------------------------------------
-# --------------------------------------- Import Keys ---------------------------------------
-# Load environment variables
-
-#base_url = "https://api.assemblyai.com/v2"
-
-#headers = {
-   # "authorization": #ASSEMBLYAI_API_KEY
-#}
-
-#load_dotenv()
-
-# -------------------------------------------------------------------------------------------
 # --------------------------------------- Create Vectordb -----------------------------------
 def create_vectordb(url):
     # Load documents
@@ -115,68 +100,7 @@ def run_agent(agent, question):
     result = agent({"question": question})
     return result["answer"]
 # --------------------------------------------------------------------------------------------
-# --------------------------------------- Voicenote to text -----------------------------------------
-
-#def voicenote(upload_url):
-    data = {
-        "audio_url": upload_url  # You can also use a URL to an audio or video file on the web
-    }
-    url = base_url + "/transcript"
-    response = requests.post(url, json=data, headers=headers)
-
-    transcript_id = response.json()['id']
-    polling_endpoint = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
-
-    while True:
-        transcription_result = requests.get(polling_endpoint, headers=headers).json()
-
-        if transcription_result['status'] == 'completed':
-            return transcription_result['text']
-
-        elif transcription_result['status'] == 'error':
-            raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
-
-        else:
-            time.sleep(3)
-
-
-# ---------------------------------------------------------------------------------------------------
-
-# ---------------------------------------- Data Collection ------------------------------------------
-
-#def data_collection(answer):
-    num_media = request.values.get('NumMedia', '')
-    sms_id = request.values.get('SmsSid', '')
-    wa_id = request.values.get('WaId', '')
-    body = request.values.get('Body', '')
-    timestamp = datetime.datetime.now()
-    answer = answer.strip()
-
-    # store into a dataframe
-    # Sample data to append
-    data_to_append = {
-        'NumMedia': [num_media],
-        'SmsSid': [sms_id],
-        'WaId': [wa_id],
-        'Body': [body],
-        'Answer': [answer],
-        'Timestamp': [timestamp]
-    }
-
-    # Create a new DataFrame from the data
-    new_data_df = pd.DataFrame(data_to_append)
-
-    # Read the existing DataFrame from the CSV file
-    existing_df = pd.read_csv("Data_Lake/messages.csv")
-
-    # Concatenate the existing DataFrame and the new DataFrame
-    df = pd.concat([existing_df, new_data_df], ignore_index=True)
-
-    # Save the combined DataFrame to a CSV file
-    df.to_csv("Data_Lake/messages.csv", index=False)
-
-# ---------------------------------------------------------------------------------------------------
-
+# --------------------------------------- Define input variables -----------------------------------------
 
 url = f"""https://www.csm.cat/"""
 vector_db = create_vectordb([url])
@@ -193,14 +117,18 @@ Question: {question}
 Helpful Answer:"""
 
 agent = create_agent(vector_db, model, template)
+#----------------------------------------------------------------------------------------------------
 
+# --------------------------------------- Define user and passwords -----------------------------------------
 user_data = {
     'ruben.tak@rslt.agency': 'ruben',
     'gabriel.renno@rslt.agency': 'gabriel',
     'nils.jennissen@rslt.agency': 'nils',
     'onassis.nottage@rslt.agency': 'onassis',
 }
+#----------------------------------------------------------------------------------------------------
 
+#-------------------------------------------- App --------------------------------------------------
 conversation_log_file = 'conversation_log.csv'
 try:
     conversation_log = pd.read_csv(conversation_log_file)
@@ -222,7 +150,7 @@ def is_duplicate_conversation(email, question, answer):
 def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question and the chatbot will reply. The chatbot uses GPT-4 to answer questions about the Col-legi Sant Miquel in Barcelona. This is the first version in test.")
-    #st.image("/Users/gabrielrenno/Documents/wpp_chatbot/WhatsAppBot/image.png", use_column_width=True)
+    
 
     question = st.text_input("Ask a question:", key='question_input')
 
@@ -241,7 +169,8 @@ def display_main_page(email):
     for index, row in current_session_log.iterrows():
         st.write(f"*You:* {row['User Message']}")
         st.write(f"*Chatbot:* {row['System Answer']}")
-
+    # Save conversation log as a csv file
+    conversation_log.to_csv(conversation_log_file, index=False)
 
 
 if 'is_logged_in' not in st.session_state:

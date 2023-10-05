@@ -1,0 +1,11 @@
+flask~=2.3.3
+python-dotenv~=1.0.0
+twilio~=8.9.0
+langchain~=0.0.277
+streamlit~=1.27.0
+pandas~=2.1.1
+requests~=2.31.0
+openai~=0.28.1
+beautifulsoup4~=4.12.2
+sentence-transformers~=2.2.2
+faiss-cpu~=1.7.4

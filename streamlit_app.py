@@ -30,7 +30,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
 
-openai.api_key = st.secrets[OPENAI_API_KEY]
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # -------------------------------------------------------------------------------------------
 # --------------------------------------- Import Keys ---------------------------------------

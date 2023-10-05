@@ -244,8 +244,8 @@ def display_main_page(email):
 
 
 
-# if 'is_logged_in' not in st.session_state:
-   #  st.session_state['is_logged_in'] = False
+if 'is_logged_in' not in st.session_state:
+    st.session_state['is_logged_in'] = False
 
 if st.session_state['is_logged_in'] == False:
     st.title("Chatbot Login")

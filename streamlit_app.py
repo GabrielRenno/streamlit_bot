@@ -148,6 +148,7 @@ def is_duplicate_conversation(email, question, answer):
 
 
 def display_main_page(email):
+    st.empty()
     st.title("Col-legi Sant Miquel Chatbot")
     st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question and the chatbot will reply. The chatbot uses GPT-4 to answer questions about the Col-legi Sant Miquel in Barcelona. This is the first version in test.")
     

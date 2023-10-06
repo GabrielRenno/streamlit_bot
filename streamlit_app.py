@@ -193,18 +193,8 @@ def display_main_page(email):
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
 
-    # Button to reset conversation log
-    if st.button("Reset Conversation Log"):
-        reset_conversation_log()
-
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
-
-# Function to reset conversation log
-def reset_conversation_log():
-    global conversation_log
-    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
-    st.success("Conversation log has been reset.")
 
 # Rest of the code remains the same
 
@@ -234,6 +224,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

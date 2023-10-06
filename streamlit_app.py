@@ -140,7 +140,7 @@ try:
 except FileNotFoundError:
     conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
 
-# Authentication function
+# Authentication function (assuming user_data is defined somewhere in your code)
 def authenticate_user(email, password):
     if email in user_data:
         return user_data[email] == password
@@ -179,11 +179,6 @@ def display_main_page(email):
 
     st.markdown(conversation_style, unsafe_allow_html=True)
 
-    for index, row in conversation_log.iterrows():
-        if row['Email'] == email:
-            st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
-
     # Text box at the bottom of the page for user input
     question = st.text_area("Ask a question:", key='question_input', height=100, max_chars=500)
 
@@ -192,6 +187,15 @@ def display_main_page(email):
 
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
+
+        #st.write("***You:***", question)
+        #st.write("***Chatbot:***", answer)
+
+    # Display the conversation log
+    for index, row in conversation_log.iterrows():
+        if row['Email'] == email:
+            st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
@@ -224,6 +228,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

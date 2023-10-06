@@ -165,7 +165,7 @@ Cal tenir en compte que aquesta és una versió de prova i, tot i que el chatbot
              
              
              
-    st.write("""<h3>English:
+    st.markdown("""<h3>English:
              Welcome to the Col-legi Sant Miquel Chatbot test App, powered by GPT-4! This cutting-edge chatbot is designed to provide you with information and answer questions about Col-legi Sant Miquel, a renowned institution in Barcelona. GPT-4 leverages advanced natural language processing to deliver detailed and accurate responses regarding various aspects of the school.
 
 To interact with the chatbot, simply ask a question or provide a topic related to Col-legi Sant Miquel in Barcelona. The chatbot will then utilize its extensive knowledge base and understanding of the topic to generate a comprehensive and informative response. Feel free to inquire about the school's history, academic programs, faculty, campus facilities, extracurricular activities, admissions process, or any other aspects you'd like to know more about.

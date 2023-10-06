@@ -199,34 +199,11 @@ if st.session_state['is_logged_in'] == False:
     email = st.text_input("Email:", value='', key='email_input', type='email')
     password = st.text_input("Password:", value='', key='password_input', type="password")
 
-    # Style the login button using HTML and CSS
-    st.markdown(
-        """
-        <style>
-        .login-button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            color: #ffffff;
-            background-color: #007BFF;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .login-button:hover {
-            background-color: #0056b3;
-        }
-        </style>
-        """
-    )
-
-    # Use the styled class for the login button
-    if st.button("Login", key='login_button', help="Login"):
+    # Style the login button with background color and padding
+    if st.button("Login", key='login_button', help="Login", 
+                 format_func=lambda _: '<span style="color:white;">Login</span>',
+                 unsafe_allow_html=True,
+                 style={'background-color': '#007BFF', 'padding': '10px 20px'}):
         if authenticate_user(email, password):
             st.session_state['is_logged_in'] = True
             st.session_state['email'] = email

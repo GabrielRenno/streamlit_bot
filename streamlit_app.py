@@ -203,7 +203,8 @@ def display_main_page(email):
 # Function to reset conversation log
 def reset_conversation_log():
     global conversation_log
-    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
+    #conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
+    st.empty()
     st.success("Conversation log has been reset.")
 
 # Rest of the code remains the same

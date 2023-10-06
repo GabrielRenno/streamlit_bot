@@ -174,7 +174,11 @@ Please keep in mind that this is a test version, and while the chatbot strives t
 
 
     # With this code to display a larger text input for the question
-    st.markdown("Hello! How can I assist you with information about Collegi Sant Miquel today? Ask me anything in the box below", unsafe_allow_html=True)
+    st.markdown("""
+## **Hello! How can I assist you with information about Col·legi Sant Miquel today?**
+Ask me anything in the box below.
+""", unsafe_allow_html=True)
+
     question = st.text_area("", key='question_input', height=100, max_chars=500)
 
     if st.button("Ask"):

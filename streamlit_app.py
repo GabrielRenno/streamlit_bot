@@ -198,8 +198,9 @@ def display_main_page(email):
     st.markdown(conversation_style, unsafe_allow_html=True)
 
     for index, row in reversed_log.iterrows():
-        st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)

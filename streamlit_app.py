@@ -227,6 +227,9 @@ Fes-me qualsevol pregunta a la caixa de sota. I understand English, Catalan, Spa
     for index, row in reversed_log.iterrows():
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+
+    # Save conversation log as a csv file
+    conversation_log.to_csv("conversation_log_file", index=False)
     # Rest of the display_main_page function remains the same
 
 # Function to allow the authorized user to download the conversation log as CSV

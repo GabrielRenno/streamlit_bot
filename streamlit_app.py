@@ -172,14 +172,36 @@ def display_main_page(email):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
 
     st.write("*Your conversation Log:*")
+    st.markdown("---")  # Add a visual separator
+
+    # Style for the conversation log
+    conversation_style = """
+        <style>
+        .conversation-log {
+            padding: 10px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .user-message {
+            font-weight: bold;
+            color: #0066ff;
+        }
+        .bot-message {
+            color: #009900;
+        }
+        </style>
+        """
+
+    st.markdown(conversation_style, unsafe_allow_html=True)
+
     current_session_log = conversation_log[conversation_log['Email'] == email]
     for index, row in current_session_log.iterrows():
-        st.write(f"*You:* {row['User Message']}")
-        st.write(f"*Chatbot:* {row['System Answer']}")
+        st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
-
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 

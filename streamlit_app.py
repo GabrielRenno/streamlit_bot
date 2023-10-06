@@ -157,7 +157,7 @@ def is_duplicate_conversation(email, question, answer):
 def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     st.markdown("""
-## Catalan
+## Català
 Benvinguts a l'aplicació de proves del Col·legi Sant Miquel Chatbot, impulsada per GPT-4! Aquest chatbot d'última generació està dissenyat per proporcionar informació i respondre preguntes sobre el Col·legi Sant Miquel, una institució reconeguda a Barcelona. GPT-4 utilitza un processament de llenguatge natural avançat per oferir respostes detallades i precises sobre diversos aspectes de l'escola.
 
 Per interactuar amb el chatbot, simplement fes una pregunta o proporciona un tema relacionat amb el Col·legi Sant Miquel a Barcelona. El chatbot utilitzarà la seva extensa base de coneixements i comprensió del tema per generar una resposta completa i informativa. Si us plau, consulta sobre la història de l'escola, programes acadèmics, professorat, instal·lacions del campus, activitats extraescolars, procés d'admissió o qualsevol altre aspecte que vulguis saber més.

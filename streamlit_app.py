@@ -140,7 +140,6 @@ try:
 except FileNotFoundError:
     conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
 
-
 # Authentication function
 def authenticate_user(email, password):
     if email in user_data:
@@ -160,7 +159,7 @@ def display_main_page(email):
     st.write("**Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.**")
 
     # With this code to display a larger text input for the question
-    st.markdown("<h3>Hello! How can I assist you with information about Collegi Sant Miquel today? Ask me anything in the box bellow</h3>", unsafe_allow_html=True)
+    st.markdown("<h3>Hello! How can I assist you with information about Collegi Sant Miquel today? Ask me anything in the box below</h3>", unsafe_allow_html=True)
     question = st.text_area("", key='question_input', height=100, max_chars=500)
 
     if st.button("Ask"):
@@ -171,9 +170,12 @@ def display_main_page(email):
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
 
-    
     st.markdown("---")  # Add a visual separator
     st.write("*Your conversation Log:*")
+    
+    # Reverse the order of the conversation log
+    reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
+    
     # Style for the conversation log
     conversation_style = """
         <style>
@@ -195,13 +197,15 @@ def display_main_page(email):
 
     st.markdown(conversation_style, unsafe_allow_html=True)
 
-    current_session_log = conversation_log[conversation_log['Email'] == email]
-    for index, row in current_session_log.iterrows():
+    for index, row in reversed_log.iterrows():
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
+
+# Rest of the code remains the same
+
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 

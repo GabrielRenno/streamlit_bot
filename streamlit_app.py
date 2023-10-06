@@ -157,7 +157,7 @@ def is_duplicate_conversation(email, question, answer):
 # Display the main chat page
 def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
-    st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.")
+    st.write("**Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.**")
 
     question = st.text_input("Ask a question:", key='question_input')
 

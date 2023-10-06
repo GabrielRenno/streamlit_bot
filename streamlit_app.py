@@ -140,13 +140,6 @@ try:
 except FileNotFoundError:
     conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
 
-# Assume this is your user data (for demonstration purposes)
-user_data = {"user@example.com": "password123"}
-
-# Assume this is your GPT-4 agent function (for demonstration purposes)
-def run_agent(agent, question):
-    # Implement your GPT-4 agent logic here
-    return "Sample GPT-4 answer for: " + question
 
 # Authentication function
 def authenticate_user(email, password):
@@ -211,6 +204,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

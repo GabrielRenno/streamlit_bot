@@ -196,6 +196,10 @@ def display_main_page(email):
 
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
+        
+        for index, row in conversation_log.iterrows():
+            st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)

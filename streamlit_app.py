@@ -132,21 +132,13 @@ user_data = {
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import base64
 
-# Initialize a global conversation log
-conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
-
-# Function to add a conversation to the global conversation log
-def add_conversation_to_log(email, question, answer):
-    global conversation_log
-    conversation_log = conversation_log.append({
-        'Email': email,
-        'User Message': question,
-        'System Answer': answer,
-        'Time': datetime.utcnow()
-    }, ignore_index=True)
-
+# Load the conversation log
+conversation_log_file = 'conversation_log.csv'
+try:
+    conversation_log = pd.read_csv(conversation_log_file)
+except FileNotFoundError:
+    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
 
 # Authentication function
 def authenticate_user(email, password):
@@ -228,16 +220,11 @@ Fes-me qualsevol pregunta a la caixa de sota. I understand English, Catalan, Spa
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
 
-    # Save conversation log as a csv file
-    conversation_log.to_csv("conversation_log_file", index=False)
-    # Rest of the display_main_page function remains the same
 
-# Function to allow the authorized user to download the conversation log as CSV
-def download_csv():
-    csv = conversation_log.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()
-    href = f'<a href="data:file/csv;base64,{b64}" download="conversation_log.csv">Download Conversation Log as CSV</a>'
-    st.markdown(href, unsafe_allow_html=True)
+    # Save conversation log as a csv file
+    conversation_log.to_csv(conversation_log_file, index=False)
+
+# Rest of the code remains the same
 
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
@@ -265,18 +252,6 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
-
-# Display the conversation log only for the authorized user
-authorized_user = 'gabriel.renno@rslt.agency'
-if st.session_state.get('email') == authorized_user:
-    if st.checkbox("Show Conversation Log"):
-        st.write("### Conversation Log")
-        st.write(conversation_log)
-
-        # Allow the authorized user to download the conversation log
-        download_csv()
-else:
-    st.info("You are not authorized to view the conversation log.")
 
 
 

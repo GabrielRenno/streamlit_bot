@@ -159,7 +159,7 @@ def display_main_page(email):
     st.write("**Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.**")
 
     # Reverse the order of the conversation log
-    reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
+    reversed_log = conversation_log[conversation_log['Email'] == email][::-1]
     
     # Style for the conversation log
     conversation_style = """
@@ -239,6 +239,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

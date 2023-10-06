@@ -159,7 +159,9 @@ def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     st.write("**Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.**")
 
-    question = st.text_input("Ask a question:", key='question_input')
+    # With this code to display a larger text input for the question
+    st.markdown("<h3>Ask a question:</h3>", unsafe_allow_html=True)
+    question = st.text_area("", key='question_input', height=100, max_chars=500)
 
     if st.button("Ask"):
         answer = run_agent(agent, question)

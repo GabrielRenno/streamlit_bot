@@ -129,33 +129,44 @@ user_data = {
 #----------------------------------------------------------------------------------------------------
 
 #-------------------------------------------- App --------------------------------------------------
+import streamlit as st
+import pandas as pd
+from datetime import datetime
+
+# Load the conversation log
 conversation_log_file = 'conversation_log.csv'
 try:
     conversation_log = pd.read_csv(conversation_log_file)
 except FileNotFoundError:
     conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
 
+# Assume this is your user data (for demonstration purposes)
+user_data = {"user@example.com": "password123"}
+
+# Assume this is your GPT-4 agent function (for demonstration purposes)
+def run_agent(agent, question):
+    # Implement your GPT-4 agent logic here
+    return "Sample GPT-4 answer for: " + question
+
+# Authentication function
 def authenticate_user(email, password):
     if email in user_data:
         return user_data[email] == password
     return False
 
+# Check for duplicate conversations
 def is_duplicate_conversation(email, question, answer):
     similar_conversations = conversation_log[(conversation_log['Email'] == email) &
                                               (conversation_log['User Message'] == question) &
                                               (conversation_log['System Answer'] == answer)]
     return not similar_conversations.empty
 
-
+# Display the main chat page
 def display_main_page(email):
-    st.empty()
     st.title("Col-legi Sant Miquel Chatbot")
-    st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question and the chatbot will reply. The chatbot uses GPT-4 to answer questions about the Col-legi Sant Miquel in Barcelona. This is the first version in test.")
-    
+    st.write("Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.")
 
     question = st.text_input("Ask a question:", key='question_input')
-
-    # Status logged in
 
     if st.button("Ask"):
         answer = run_agent(agent, question)
@@ -170,10 +181,14 @@ def display_main_page(email):
     for index, row in current_session_log.iterrows():
         st.write(f"*You:* {row['User Message']}")
         st.write(f"*Chatbot:* {row['System Answer']}")
+
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
 
+# Streamlit app logic
+st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 
+# Check if the user is logged in
 if 'is_logged_in' not in st.session_state:
     st.session_state['is_logged_in'] = False
 
@@ -191,13 +206,11 @@ if st.session_state['is_logged_in'] == False:
         else:
             st.error("Invalid email or password. Please try again.")
 
-elif 'email' in st.session_state:  # Check if 'email' is in st.session_state before trying to access it
+elif 'email' in st.session_state:
     display_main_page(st.session_state['email'])
 
 else:
     st.error("Please log in to continue.")
-
-conversation_log.to_csv(conversation_log_file, index=False)
 
 
 

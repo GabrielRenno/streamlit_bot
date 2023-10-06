@@ -220,8 +220,19 @@ def display_main_page(email):
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 
+# Function to reset the conversation
+def reset_conversation():
+    global conversation_log
+    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
+    st.empty()  # Clear the UI
+
+# Check if the user is logged in
 if 'is_logged_in' not in st.session_state:
     st.session_state['is_logged_in'] = False
+
+# Reset Conversation button
+if st.button("Reset Conversation"):
+    reset_conversation()
 
 if st.session_state['is_logged_in'] == False:
     st.title("Chatbot Login")
@@ -242,6 +253,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

@@ -159,7 +159,7 @@ def display_main_page(email):
     st.write("**Welcome to the Col-legi Sant Miquel Chatbot test App. Ask a question, and the chatbot will reply. The chatbot uses GPT-4 to answer questions about Col-legi Sant Miquel in Barcelona. This is the first version in test.**")
 
     # Reverse the order of the conversation log
-    reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
+    #reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
     
     # Style for the conversation log
     conversation_style = """
@@ -182,7 +182,7 @@ def display_main_page(email):
 
     st.markdown(conversation_style, unsafe_allow_html=True)
 
-    for index, row in reversed_log.iterrows():
+    for index, row in conversation_log.iterrows():
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
 

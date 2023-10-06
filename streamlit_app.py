@@ -194,18 +194,10 @@ if 'is_logged_in' not in st.session_state:
 
 if st.session_state['is_logged_in'] == False:
     st.title("Chatbot Login")
+    email = st.text_input("Email:")
+    password = st.text_input("Password:", type="password")
 
-    # Improved styling for email and password input fields
-    email = st.text_input("Email:", value='', key='email_input', type='email')
-    password = st.text_input("Password:", value='', key='password_input', type="password")
-
-    # Style the login button using Streamlit's style argument
-    login_button = st.button("Login", help="Login", key='login_button', 
-                             format_func=lambda _: '<span style="color:white;">Login</span>',
-                             unsafe_allow_html=True,
-                             style={'background-color': '#007BFF', 'padding': '10px 20px'})
-
-    if login_button:
+    if st.button("Login"):
         if authenticate_user(email, password):
             st.session_state['is_logged_in'] = True
             st.session_state['email'] = email

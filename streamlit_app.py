@@ -170,8 +170,8 @@ def display_main_page(email):
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
 
-    st.markdown("---")  # Add a visual separator
-    st.write("*Your conversation Log:*")
+    #st.markdown("---")  # Add a visual separator
+    #st.write("*Your conversation Log:*")
     
     # Reverse the order of the conversation log
     reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]

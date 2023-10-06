@@ -142,16 +142,22 @@ except FileNotFoundError:
 
 # Authentication function
 def authenticate_user(email, password):
-    # Implementation for authentication (not provided in the original code)
-    pass
+    if email == "test@example.com" and password == "password":
+        return True
+    else:
+        return False
 
 # Check for duplicate conversations
 def is_duplicate_conversation(email, question, answer):
-    # Implementation for checking duplicate conversations (not provided in the original code)
-    pass
+    similar_conversations = conversation_log[(conversation_log['Email'] == email) &
+                                              (conversation_log['User Message'] == question) &
+                                              (conversation_log['System Answer'] == answer)]
+    return not similar_conversations.empty
 
 # Display the main chat page
 def display_main_page(email):
+    global conversation_log  # Declare conversation_log as a global variable
+
     st.title("Col-legi Sant Miquel Chatbot")
     
     st.markdown("""
@@ -170,12 +176,24 @@ def display_main_page(email):
     Please keep in mind that this is a test version, and while the chatbot strives to offer accurate and helpful information, it may not always have the most up-to-date details. We appreciate your feedback and input as we continue to enhance and improve this app. Ask away and explore the world of Col-legi Sant Miquel with our GPT-4-powered chatbot!
     """)
     
-    # ... Existing code for the chat interface ...
+    # With this code to display a larger text input for the question
+    st.markdown("""
+    ## **Hello! How can I assist you with information about Col·legi Sant Miquel today?**
+    Ask me anything in the box below.
+    """, unsafe_allow_html=True)
 
-    # Reset conversation button
-    if st.button("Reset Conversation"):
-        # Clear conversation log
-        conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
+    question = st.text_area("", key='question_input', height=100, max_chars=500)
+
+    if st.button("Ask"):
+        answer = run_agent(agent, question)
+        #st.write("***You:***", question)
+        #st.write("***Chatbot:***", answer)
+
+        if not is_duplicate_conversation(email, question, answer):
+            conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
+
+    #st.markdown("---")  # Add a visual separator
+    #st.write("*Your conversation Log:*")
     
     # Reverse the order of the conversation log
     reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
@@ -204,6 +222,7 @@ def display_main_page(email):
     for index, row in reversed_log.iterrows():
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
+
 
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
@@ -236,6 +255,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

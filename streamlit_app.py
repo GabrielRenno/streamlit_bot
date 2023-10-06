@@ -199,18 +199,17 @@ if st.session_state['is_logged_in'] == False:
     email = st.text_input("Email:", value='', key='email_input', type='email')
     password = st.text_input("Password:", value='', key='password_input', type="password")
 
-    # Style the login button with background color and padding
-    if st.button("Login", key='login_button', help="Login", 
-                 format_func=lambda _: '<span style="color:white;">Login</span>',
-                 unsafe_allow_html=True,
-                 style={'background-color': '#007BFF', 'padding': '10px 20px'}):
-        if authenticate_user(email, password):
-            st.session_state['is_logged_in'] = True
-            st.session_state['email'] = email
-            st.empty()
-            display_main_page(email)
-        else:
-            st.error("Invalid email or password. Please try again.")
+    # Style the login button using beta_container
+    with st.beta_container():
+        login_button = st.button("Login")
+        if login_button:
+            if authenticate_user(email, password):
+                st.session_state['is_logged_in'] = True
+                st.session_state['email'] = email
+                st.empty()
+                display_main_page(email)
+            else:
+                st.error("Invalid email or password. Please try again.")
 
 
 elif 'email' in st.session_state:

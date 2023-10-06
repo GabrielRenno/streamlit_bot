@@ -199,8 +199,32 @@ if st.session_state['is_logged_in'] == False:
     email = st.text_input("Email:", value='', key='email_input', type='email')
     password = st.text_input("Password:", value='', key='password_input', type="password")
 
-    # Improved styling for the login button
-    login_button = st.button("Login", key='login_button', class="btn btn-primary")
+    # Style the login button using CSS
+    st.markdown("""
+        <style>
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            color: #ffffff;
+            background-color: #007BFF;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Use the styled class for the login button
+    login_button = st.button("Login", key='login_button', class="login-button")
 
     if login_button:
         if authenticate_user(email, password):
@@ -210,6 +234,7 @@ if st.session_state['is_logged_in'] == False:
             display_main_page(email)
         else:
             st.error("Invalid email or password. Please try again.")
+
 
 elif 'email' in st.session_state:
     display_main_page(st.session_state['email'])

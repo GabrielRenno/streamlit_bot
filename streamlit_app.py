@@ -209,6 +209,7 @@ def reset_conversation_log():
     global conversation_log
     conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
     st.success("Conversation log has been reset.")
+    st.empty()  # Empty the current contents on the page
 
 # Rest of the code remains the same
 
@@ -238,6 +239,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

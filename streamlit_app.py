@@ -154,6 +154,12 @@ def is_duplicate_conversation(email, question, answer):
                                               (conversation_log['System Answer'] == answer)]
     return not similar_conversations.empty
 
+# Function to reset the conversation
+def reset_conversation():
+    global conversation_log
+    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
+    st.empty()  # Clear the UI
+
 # Display the main chat page
 def display_main_page(email):
     global conversation_log  # Declare conversation_log as a global variable
@@ -161,44 +167,27 @@ def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     
     st.markdown("""
-    ## Catalan
-    Benvinguts a l'aplicació de proves del Col·legi Sant Miquel Chatbot, impulsada per GPT-4! Aquest chatbot d'última generació està dissenyat per proporcionar informació i respondre preguntes sobre el Col·legi Sant Miquel, una institució reconeguda a Barcelona. GPT-4 utilitza un processament de llenguatge natural avançat per oferir respostes detallades i precises sobre diversos aspectes de l'escola.
-
-    Per interactuar amb el chatbot, simplement fes una pregunta o proporciona un tema relacionat amb el Col·legi Sant Miquel a Barcelona. El chatbot utilitzarà la seva extensa base de coneixements i comprensió del tema per generar una resposta completa i informativa. Si us plau, consulta sobre la història de l'escola, programes acadèmics, professorat, instal·lacions del campus, activitats extraescolars, procés d'admissió o qualsevol altre aspecte que vulguis saber més.
-
-    Cal tenir en compte que aquesta és una versió de prova i, tot i que el chatbot esforça a oferir informació precisa i útil, potser no sempre disposi de la informació més actualitzada. Agraïm els vostres comentaris i suggeriments mentre seguim millorant i ampliant aquesta aplicació. Feu les vostres preguntes i exploreu el món del Col·legi Sant Miquel amb el nostre chatbot impulsat per GPT-4!
-
-    ## English
-    Welcome to the Col-legi Sant Miquel Chatbot test App, powered by GPT-4! This cutting-edge chatbot is designed to provide you with information and answer questions about Col-legi Sant Miquel, a renowned institution in Barcelona. GPT-4 leverages advanced natural language processing to deliver detailed and accurate responses regarding various aspects of the school.
-
-    To interact with the chatbot, simply ask a question or provide a topic related to Col-legi Sant Miquel in Barcelona. The chatbot will then utilize its extensive knowledge base and understanding of the topic to generate a comprehensive and informative response. Feel free to inquire about the school's history, academic programs, faculty, campus facilities, extracurricular activities, admissions process, or any other aspects you'd like to know more about.
-
-    Please keep in mind that this is a test version, and while the chatbot strives to offer accurate and helpful information, it may not always have the most up-to-date details. We appreciate your feedback and input as we continue to enhance and improve this app. Ask away and explore the world of Col-legi Sant Miquel with our GPT-4-powered chatbot!
-    """)
-    
-    # With this code to display a larger text input for the question
-    st.markdown("""
     ## **Hello! How can I assist you with information about Col·legi Sant Miquel today?**
     Ask me anything in the box below.
     """, unsafe_allow_html=True)
 
+    # Text area for user to input their question
     question = st.text_area("", key='question_input', height=100, max_chars=500)
 
+    # Ask button to trigger the question
     if st.button("Ask"):
         answer = run_agent(agent, question)
-        #st.write("***You:***", question)
-        #st.write("***Chatbot:***", answer)
 
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]
 
-    #st.markdown("---")  # Add a visual separator
-    #st.write("*Your conversation Log:*")
-    
+    # Add "Reset Conversation" button below the text area
+    if st.button("Reset Conversation"):
+        reset_conversation()
+
     # Reverse the order of the conversation log
     reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
     
-    # Style for the conversation log
     conversation_style = """
         <style>
         .conversation-log {
@@ -223,7 +212,6 @@ def display_main_page(email):
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
 
-
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
 
@@ -232,19 +220,8 @@ def display_main_page(email):
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 
-# Function to reset the conversation
-def reset_conversation():
-    global conversation_log
-    conversation_log = pd.DataFrame(columns=['Email', 'User Message', 'System Answer', 'Time'])
-    st.empty()  # Clear the UI
-
-# Check if the user is logged in
 if 'is_logged_in' not in st.session_state:
     st.session_state['is_logged_in'] = False
-
-# Reset Conversation button
-if st.button("Reset Conversation"):
-    reset_conversation()
 
 if st.session_state['is_logged_in'] == False:
     st.title("Chatbot Login")
@@ -265,6 +242,7 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
+
 
 
 

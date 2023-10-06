@@ -164,8 +164,8 @@ def display_main_page(email):
 
     if st.button("Ask"):
         answer = run_agent(agent, question)
-        st.write("***You:***", question)
-        st.write("***Chatbot:***", answer)
+        #st.write("***You:***", question)
+        #st.write("***Chatbot:***", answer)
 
         if not is_duplicate_conversation(email, question, answer):
             conversation_log.loc[len(conversation_log)] = [email, question, answer, datetime.utcnow()]

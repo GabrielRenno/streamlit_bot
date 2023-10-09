@@ -126,6 +126,7 @@ user_data = {
     'nils.jennissen@rslt.agency': 'nils',
     'onassis.nottage@rslt.agency': 'onassis',
     'enriquepeto@yahoo.es': 'xR9p#2',
+    'jgonzalez@profe.csm.cat': 'lE0@#1',
 }
 #----------------------------------------------------------------------------------------------------
 

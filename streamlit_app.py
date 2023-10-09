@@ -189,11 +189,11 @@ Fes-me qualsevol pregunta a la caixa de sota. I understand English, Catalan, Spa
         #st.write("***Chatbot:***", answer)
 
         # Like and Dislike buttons
-        if st.button("Like"):
-            st.write("You liked the answer!")
+        #if st.button("Like"):
+           # st.write("You liked the answer!")
 
-        if st.button("Dislike"):
-            st.write("You disliked the answer.")
+        #if st.button("Dislike"):
+          #  st.write("You disliked the answer.")
 
         # Store the conversation in the log
         if not is_duplicate_conversation(email, question, answer):

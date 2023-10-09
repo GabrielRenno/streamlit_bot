@@ -127,6 +127,12 @@ user_data = {
     'onassis.nottage@rslt.agency': 'onassis',
     'enriquepeto@yahoo.es': 'xR9p#2',
     'jgonzalez@profe.csm.cat': 'lE0@#1',
+    'vgregorio@profe.csm.cat': "Rt5y#1",
+    'atomasa@profe.csm.cat': 'Kp2@l9',
+    'chidalgo@profe.csm.cat': 'Jf0g98',
+    'cmatellan@profe.csm.cat': 'Ls9@t3',
+    'scunillera@profe.csm.cat' : 'Gj4l&7',
+    'bvega@profe.csm.cat': 'Xk6p@2',
 }
 #----------------------------------------------------------------------------------------------------
 

@@ -47,14 +47,12 @@ def create_vectordb(url):
         if filename.endswith(".pdf"):
             # Create a loader for each PDF file
             loader = PyPDFLoader(os.path.join(pdf_directory, filename))
-            docs_pdf.append(loader)  # Add the loaded PDF to the list
+            data = loader.load()
+            docs_pdf.append(data)  # Add the loaded PDF to the list
     # Merge PDF docs and URL docs
     merged_docs = docs_url + docs_pdf
 
-    # Save merged_docs as text file
-    # Write the code to the file
-    with open(merged_docs, "w") as file:
-        file.write(merged_docs)
+
 
 
     # Split text

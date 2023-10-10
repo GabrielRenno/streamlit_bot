@@ -35,11 +35,10 @@ import pinecone
 
 
 def create_vectordb(url):
-    
     # Load URL
     loader = WebBaseLoader(url)
     docs_url = loader.load()
-
+ 
     # Load PDFs
     # Directory containing PDF files
     pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
@@ -58,7 +57,8 @@ def create_vectordb(url):
     # Load data for each file
     for i, (file_name, _) in enumerate(file_loader_pairs):
         loader = PyPDFLoader(file_name)
-        file_loader_pairs[i] = (file_name, loader.load())
+        # Access the page_content attribute
+        file_loader_pairs[i] = (file_name, loader.load().page_content)
 
     # Extract data for merging
     merged_docs = [data for _, data in file_loader_pairs if data]
@@ -73,7 +73,9 @@ def create_vectordb(url):
         chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(merged_docs)
+    splits = []
+    for doc in merged_docs:
+        splits.extend(r_splitter.split_text(doc))
 
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
@@ -82,13 +84,11 @@ def create_vectordb(url):
     pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
     index_name = "python-index"
 
-    # Flatten the splits list as Pinecone.from_texts() expects a list of strings
-    flattened_splits = [item for sublist in splits for item in sublist]
-
     # Create Vector Database using Pinecone
-    vectordb = Pinecone.from_texts(texts=flattened_splits, embedding=embeddings, index_name=index_name)
+    vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
 
     return vectordb
+
 
 
 

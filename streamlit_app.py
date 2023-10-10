@@ -35,7 +35,8 @@ import pinecone
 
 
 def create_vectordb(url):
-    # Load Url
+    
+    # Load URL
     loader = WebBaseLoader(url)
     docs_url = loader.load()
 
@@ -59,8 +60,6 @@ def create_vectordb(url):
         loader = PyPDFLoader(file_name)
         file_loader_pairs[i] = (file_name, loader.load())
 
-    # Extract data for merging
-    # Extract data for merging
     # Extract data for merging
     merged_docs = [data for _, data in file_loader_pairs if data]
 
@@ -90,6 +89,7 @@ def create_vectordb(url):
     vectordb = Pinecone.from_texts(texts=flattened_splits, embedding=embeddings, index_name=index_name)
 
     return vectordb
+
 
 
 # --------------------------------------------------------------------------------------------

@@ -51,6 +51,12 @@ def create_vectordb(url):
     # Merge PDF docs and URL docs
     merged_docs = docs_url + docs_pdf
 
+    # Save merged_docs as text file
+    # Write the code to the file
+    with open(merged_docs, "w") as file:
+        file.write(merged_docs)
+
+
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
         chunk_size=150,

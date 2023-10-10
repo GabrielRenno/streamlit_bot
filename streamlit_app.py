@@ -60,10 +60,7 @@ def create_vectordb(url):
 
     # Extract data for merging
     merged_docs = [content for _, data in file_loader_pairs for content in data if content]
-    # Merged_docs * docs_url
-    merged_docs = merged_docs.append(docs_url)
 
- 
 
     # Ensure merged_docs is a list of strings
     if not all(isinstance(doc, str) for doc in merged_docs):

@@ -94,20 +94,20 @@ def create_vectordb(url):
  
 
     # # Create Embeddings
-    # embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
+    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
 
  
 
     # Initialize Pinecone
-    pinecone_index = pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
+    pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
     index_name = "python-index"
 
  
 
     # Create Vector Database using Pinecone
-    #vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
+    vectordb = Pinecone.from_texts( embedding=embeddings, index_name=index_name)
 
-    vectordb = pinecone_index
+    
 
     return vectordb
 

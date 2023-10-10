@@ -30,6 +30,10 @@ from bs4 import BeautifulSoup
 from langchain.document_loaders import PyPDFLoader
 
 # --------------------------------------- Create Vectordb -----------------------------------
+from langchain.vectorstores import Pinecone
+import pinecone
+
+
 def create_vectordb(url):
     # Load Url
     loader = WebBaseLoader(url)
@@ -42,15 +46,7 @@ def create_vectordb(url):
     # Initialize a list to store the PDFs
     docs_pdf = []
 
-    # Iterate through all PDF files in the directory
-    #for filename in os.listdir(pdf_directory):
-       # if filename.endswith(".pdf"):
-        #    # Create a loader for each PDF file
-        #    loader = PyPDFLoader(os.path.join(pdf_directory, filename))
-         #   data = loader.load()
-         #   docs_pdf.append(data)  # Add the loaded PDF to the list
-
-# File names and corresponding loader instances
+    # File names and corresponding loader instances
     file_loader_pairs = [
         ("08009636_Sant Miquel_Resum de l'EDC.pdf", None),
         ("DM_Dir_NOF_CSM_14_set_2023.pdf", None),
@@ -66,30 +62,23 @@ def create_vectordb(url):
     # Extract data for merging
     merged_docs = [data for _, data in file_loader_pairs if data]
 
-
-
-
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=50,
-        chunk_overlap=5,
+        chunk_size=500,
+        chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
     splits = r_splitter.split_text(merged_docs[0].page_content)
 
     # Create Embeddings
-    #model_name = "sentence-transformers/all-mpnet-base-v2"
-    #model_kwargs = {'device': 'cpu'}
-    #encode_kwargs = {'normalize_embeddings': False}
-    #embeddings = HuggingFaceEmbeddings(
-     #   model_name=model_name,
-      #  model_kwargs=model_kwargs,
-       # encode_kwargs=encode_kwargs,
-    #)
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
 
-    # Create Vector Database
-    vectordb = FAISS.from_texts(texts=splits, embedding=embeddings)
+    # Initialize Pinecone
+    pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
+    index_name = "python-index"
+
+    # Create Vector Database using Pinecone
+    vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
 
     return vectordb
 

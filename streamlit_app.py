@@ -50,21 +50,21 @@ def create_vectordb(url):
          #   data = loader.load()
          #   docs_pdf.append(data)  # Add the loaded PDF to the list
 
-    loader1 = PyPDFLoader("08009636_Sant Miquel_Resum de l'EDC.pdf")
-    data1 = loader1.load()
+# File names and corresponding loader instances
+    file_loader_pairs = [
+        ("08009636_Sant Miquel_Resum de l'EDC.pdf", None),
+        ("DM_Dir_NOF_CSM_14_set_2023.pdf", None),
+        ("DM_DIR_PEC_JUNY_23.pdf", None),
+        ("NOF_digital.pdf", None)
+    ]
 
-    loader2 = PyPDFLoader("DM_Dir_NOF_CSM_14_set_2023.pdf")
-    data2 = loader2.load()    
+    # Load data for each file
+    for i, (file_name, _) in enumerate(file_loader_pairs):
+        loader = PyPDFLoader(file_name)
+        file_loader_pairs[i] = (file_name, loader.load())
 
-    loader3 = PyPDFLoader("DM_DIR_PEC_JUNY_23.pdf")
-    data3 = loader3.load()    
-
-    loader4 = PyPDFLoader("NOF_digital.pdf")
-    data4 = loader4.load()           
-
-
-    # Merge PDF docs and URL docs
-    merged_docs = data1 + data2 +data3  +data4 
+    # Extract data for merging
+    merged_docs = [data for _, data in file_loader_pairs if data]
 
 
 

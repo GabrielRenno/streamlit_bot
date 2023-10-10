@@ -61,6 +61,7 @@ def create_vectordb(url):
 
     # Extract data for merging
     merged_docs = [data for _, data in file_loader_pairs if data]
+    merged_text = " ".join(merged_docs)  # Join all the text into a single string
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
@@ -68,7 +69,7 @@ def create_vectordb(url):
         chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(merged_docs)
+    splits = r_splitter.split_text(merged_text)
 
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])

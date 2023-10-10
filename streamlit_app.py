@@ -68,7 +68,7 @@ def create_vectordb(url):
         chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(merged_docs[0])
+    splits = r_splitter.split_text(merged_docs)
 
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])

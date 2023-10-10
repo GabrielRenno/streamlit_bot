@@ -60,8 +60,12 @@ def create_vectordb(url):
         file_loader_pairs[i] = (file_name, loader.load())
 
     # Extract data for merging
+    # Extract data for merging
     merged_docs = [data for _, data in file_loader_pairs if data]
-    merged_text = " ".join(merged_docs)  # Join all the text into a single string
+
+    # Ensure merged_docs is a list of strings
+    if not all(isinstance(doc, str) for doc in merged_docs):
+        raise ValueError("Merged documents should be a list of strings.")
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
@@ -69,7 +73,7 @@ def create_vectordb(url):
         chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(merged_text)
+    splits = r_splitter.split_text(merged_docs)
 
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
@@ -78,8 +82,11 @@ def create_vectordb(url):
     pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
     index_name = "python-index"
 
+    # Flatten the splits list as Pinecone.from_texts() expects a list of strings
+    flattened_splits = [item for sublist in splits for item in sublist]
+
     # Create Vector Database using Pinecone
-    vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
+    vectordb = Pinecone.from_texts(texts=flattened_splits, embedding=embeddings, index_name=index_name)
 
     return vectordb
 

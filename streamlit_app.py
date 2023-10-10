@@ -71,8 +71,8 @@ def create_vectordb(url):
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=150,
-        chunk_overlap=10,
+        chunk_size=500,
+        chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
     splits = r_splitter.split_text(merged_docs[0].page_content)

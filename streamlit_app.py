@@ -31,7 +31,7 @@ from langchain.document_loaders import PyPDFLoader
 
 # --------------------------------------- Create Vectordb -----------------------------------
 from langchain.vectorstores import Pinecone
-import pinecone
+import pineconeclient
 
 
 def create_vectordb(url):

@@ -38,13 +38,19 @@ def create_vectordb(url):
     # Load URL
     loader = WebBaseLoader(url)
     docs_url = loader.load()
+
  
+
     # Load PDFs
     # Directory containing PDF files
     pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
 
+ 
+
     # Initialize a list to store the PDFs
     docs_pdf = []
+
+ 
 
     # File names and corresponding loader instances
     file_loader_pairs = [
@@ -54,18 +60,26 @@ def create_vectordb(url):
         ("NOF_digital.pdf", None)
     ]
 
+ 
+
     # Load data for each file
     for i, (file_name, _) in enumerate(file_loader_pairs):
         loader = PyPDFLoader(file_name)
-        # Access the page_content attribute
-        file_loader_pairs[i] = (file_name, loader.load().page_content)
+        # Access the page_content attribute for each Document in the list
+        file_loader_pairs[i] = (file_name, [doc.page_content for doc in loader.load()])
+
+ 
 
     # Extract data for merging
-    merged_docs = [data for _, data in file_loader_pairs if data]
+    merged_docs = [content for _, data in file_loader_pairs for content in data if content]
+
+ 
 
     # Ensure merged_docs is a list of strings
     if not all(isinstance(doc, str) for doc in merged_docs):
         raise ValueError("Merged documents should be a list of strings.")
+
+ 
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
@@ -77,15 +91,23 @@ def create_vectordb(url):
     for doc in merged_docs:
         splits.extend(r_splitter.split_text(doc))
 
+ 
+
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
+
+ 
 
     # Initialize Pinecone
     pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
     index_name = "python-index"
 
+ 
+
     # Create Vector Database using Pinecone
     vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
+
+ 
 
     return vectordb
 

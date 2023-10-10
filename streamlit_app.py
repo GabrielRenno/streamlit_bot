@@ -27,13 +27,29 @@ from langchain.agents import initialize_agent
 import pandas as pd
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
-
+from langchain.document_loaders import PyPDFLoader
 
 # --------------------------------------- Create Vectordb -----------------------------------
 def create_vectordb(url):
-    # Load documents
+    # Load Url
     loader = WebBaseLoader(url)
-    docs = loader.load()
+    docs_url = loader.load()
+
+    # Load PDFs
+    # Directory containing PDF files
+    pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
+
+    # Initialize a list to store the PDFs
+    docs_pdf = []
+
+    # Iterate through all PDF files in the directory
+    for filename in os.listdir(pdf_directory):
+        if filename.endswith(".pdf"):
+            # Create a loader for each PDF file
+            loader = PyPDFLoader(os.path.join(pdf_directory, filename))
+            docs_pdf.append(loader)  # Add the loaded PDF to the list
+    # Merge PDF docs and URL docs
+    merged_docs = docs_url + docs_pdf
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
@@ -41,7 +57,7 @@ def create_vectordb(url):
         chunk_overlap=10,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(docs[0].page_content)
+    splits = r_splitter.split_text(merged_docs[0].page_content)
 
     # Create Embeddings
     #model_name = "sentence-transformers/all-mpnet-base-v2"

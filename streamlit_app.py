@@ -33,7 +33,7 @@ from langchain.document_loaders import PyPDFLoader
 def create_vectordb(url):
     # Load Url
     loader = WebBaseLoader(url)
-    docs = loader.load()
+    docs_url = loader.load()
 
     # Load PDFs
     # Directory containing PDF files
@@ -53,7 +53,7 @@ def create_vectordb(url):
     loader = PyPDFLoader("08009636_Sant Miquel_Resum de l'EDC.pdf")
     data = loader.load()       
     # Merge PDF docs and URL docs
-    #merged_docs = docs_url + docs_pdf
+    merged_docs = docs_url + data
 
 
 
@@ -64,7 +64,7 @@ def create_vectordb(url):
         chunk_overlap=10,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
-    splits = r_splitter.split_text(docs[0].page_content)
+    splits = r_splitter.split_text(merged_docs[0].page_content)
 
     # Create Embeddings
     #model_name = "sentence-transformers/all-mpnet-base-v2"

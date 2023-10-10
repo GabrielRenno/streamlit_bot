@@ -64,6 +64,7 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==10.0.1
+pinecone-client ==2.2.4
 platformdirs==3.11.0
 prompt-toolkit==3.0.39
 protobuf==4.24.4

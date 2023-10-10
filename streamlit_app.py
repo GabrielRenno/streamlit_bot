@@ -83,8 +83,8 @@ def create_vectordb(url):
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50,
+        chunk_size=150,
+        chunk_overlap=35,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
     splits = []

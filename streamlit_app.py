@@ -39,6 +39,18 @@ def create_vectordb(url):
     loader = WebBaseLoader(url)
     docs_url = loader.load()
 
+ 
+
+    # Load PDFs
+    # Directory containing PDF files
+    pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
+
+ 
+
+    # Initialize a list to store the PDFs
+    docs_pdf = []
+
+ 
 
     # File names and corresponding loader instances
     file_loader_pairs = [
@@ -60,8 +72,6 @@ def create_vectordb(url):
 
     # Extract data for merging
     merged_docs = [content for _, data in file_loader_pairs for content in data if content]
-    # Merged_docs * docs_url
-
 
  
 
@@ -73,8 +83,8 @@ def create_vectordb(url):
 
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=150,
-        chunk_overlap=35,
+        chunk_size=500,
+        chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
     splits = []
@@ -313,18 +323,3 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

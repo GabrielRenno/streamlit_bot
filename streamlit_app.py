@@ -31,7 +31,7 @@ import pinecone
 # --------------------------------------- Create Vectordb -----------------------------------
 
 
-#@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, hash_funcs={_thread.RLock: lambda _: None})
 def create_vectordb(url):
     # Load URL
     loader = WebBaseLoader(url)

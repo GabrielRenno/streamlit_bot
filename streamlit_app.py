@@ -1,49 +1,56 @@
-
 # ------------------------------------- Import packages ---------------------------------------
+from dotenv import load_dotenv
 import os
 from datetime import datetime
+import openai
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
 import streamlit as st
-from dotenv import load_dotenv
-from twilio.rest import Client
-import requests
-import time
-from flask import Flask, request, jsonify
-from bs4 import BeautifulSoup
-import pandas as pd
-from langchain.document_loaders import WebBaseLoader, PyPDFLoader
+# LangChain related imports
+from langchain.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS, Pinecone
+from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from langchain.embeddings import HuggingFaceInstructEmbeddings, HuggingFaceEmbeddings
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
+
+from flask import Flask, request, jsonify
+
+from twilio.rest import Client
+import requests
+import time
 from langchain.agents import initialize_agent
-from langchain.vectorstores import Pinecone
-import pinecone
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
-from langchain.vectorstores import Pinecone
-import pinecone
-
-
+import pandas as pd
+from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+from langchain.document_loaders import PyPDFLoader
 
 # --------------------------------------- Create Vectordb -----------------------------------
+from langchain.vectorstores import Pinecone
+import pinecone
 
 
-@st.cache(allow_output_mutation=True, hash_funcs={_thread.RLock: lambda _: None})
 def create_vectordb(url):
     # Load URL
     loader = WebBaseLoader(url)
     docs_url = loader.load()
 
-    # Load PDFs and merge content
-    merged_docs = []
+ 
 
-    # Add content from URLs
-    merged_docs.extend(docs_url)
+    # Load PDFs
+    # Directory containing PDF files
+    pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
 
-    # Add content from PDFs
+ 
+
+    # Initialize a list to store the PDFs
+    docs_pdf = []
+
+ 
+
+    # File names and corresponding loader instances
     file_loader_pairs = [
         ("08009636_Sant Miquel_Resum de l'EDC.pdf", None),
         ("DM_Dir_NOF_CSM_14_set_2023.pdf", None),
@@ -51,31 +58,54 @@ def create_vectordb(url):
         ("NOF_digital.pdf", None)
     ]
 
+ 
+
+    # Load data for each file
+    for i, (file_name, _) in enumerate(file_loader_pairs):
+        loader = PyPDFLoader(file_name)
+        # Access the page_content attribute for each Document in the list
+        file_loader_pairs[i] = (file_name, [doc.page_content for doc in loader.load()])
+
+ 
+
+    # Extract data for merging
+    merged_docs = [content for _, data in file_loader_pairs for content in data if content]
+
+ 
+
+    # Ensure merged_docs is a list of strings
+    if not all(isinstance(doc, str) for doc in merged_docs):
+        raise ValueError("Merged documents should be a list of strings.")
+
+ 
+
+    # Split text
     r_splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
         chunk_overlap=50,
         separators=["\n\n", "\n", "(?<=\. )", " ", ""]
     )
+    splits = []
+    for doc in merged_docs:
+        splits.extend(r_splitter.split_text(doc))
 
-    for file_name, _ in file_loader_pairs:
-        loader = PyPDFLoader(file_name)
-        merged_docs.extend(content for doc in loader.load() if (content := doc.page_content))
-
-    # Ensure merged_docs is a list of strings
-    merged_docs = [doc for doc in merged_docs if isinstance(doc, str)]
-
-    # Split text
-    splits = [content for doc in merged_docs for content in r_splitter.split_text(doc) if content]
+ 
 
     # Create Embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
+
+ 
 
     # Initialize Pinecone
     pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
     index_name = "python-index"
 
+ 
+
     # Create Vector Database using Pinecone
     vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
+
+ 
 
     return vectordb
 
@@ -291,18 +321,3 @@ elif 'email' in st.session_state:
 
 else:
     st.error("Please log in to continue.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

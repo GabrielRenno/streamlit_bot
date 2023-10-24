@@ -1,66 +1,45 @@
-import os
+'''
+This is the curent up to date version of the streamlit whatsapp interface
+'''
 
-# ------------------------------------- Import packages ---------------------------------------
-from dotenv import load_dotenv
-import os
+# ------------------------------------------------ IMPORT  ---------------------------------------------------------- #
+import pandas as pd
+import pinecone
+
 from datetime import datetime
-import openai
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 import streamlit as st
-# LangChain related imports
 from langchain.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from langchain.embeddings import HuggingFaceInstructEmbeddings
-from langchain.embeddings import HuggingFaceEmbeddings
-
-from flask import Flask, request, jsonify
-
-from twilio.rest import Client
-import requests
-import time
-from langchain.agents import initialize_agent
-import pandas as pd
-from dotenv import load_dotenv
-from bs4 import BeautifulSoup
 from langchain.document_loaders import PyPDFLoader
-
-# --------------------------------------- Create Vectordb -----------------------------------
 from langchain.vectorstores import Pinecone
-import pinecone
 
+# ----------------------------------------- CREDENTIALS TESTING  ---------------------------------------------------- #
+# from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
+PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]
 
+# --------------------------------------- CONNECT TO VECTORDATABASE  ------------------------------------------------ #
 def create_vectordb(url):
     # Load URL
     loader = WebBaseLoader(url)
     docs_url = loader.load()
 
- 
-
-    # Load PDFs
-    # Directory containing PDF files
-    pdf_directory = "."  # Assuming the PDF files are in the same directory as your .py file
-
- 
-
     # Initialize a list to store the PDFs
     docs_pdf = []
 
- 
-
     # File names and corresponding loader instances
     file_loader_pairs = [
-        ("08009636_Sant Miquel_Resum de l'EDC.pdf", None),
-        ("DM_Dir_NOF_CSM_14_set_2023.pdf", None),
-        ("DM_DIR_PEC_JUNY_23.pdf", None),
-        ("NOF_digital.pdf", None)
+        ("./docs/08009636_Sant Miquel_Resum de l'EDC.pdf", None),
+        ("./docs/DM_Dir_NOF_CSM_14_set_2023.pdf", None),
+        ("./docs/DM_DIR_PEC_JUNY_23.pdf", None),
+        ("./docs/NOF_digital.pdf", None)
     ]
-
- 
 
     # Load data for each file
     for i, (file_name, _) in enumerate(file_loader_pairs):
@@ -68,59 +47,53 @@ def create_vectordb(url):
         # Access the page_content attribute for each Document in the list
         file_loader_pairs[i] = (file_name, [doc.page_content for doc in loader.load()])
 
- 
-
     # Extract data for merging
     merged_docs = [content for _, data in file_loader_pairs for content in data if content]
-
- 
 
     # Ensure merged_docs is a list of strings
     if not all(isinstance(doc, str) for doc in merged_docs):
         raise ValueError("Merged documents should be a list of strings.")
 
- 
-
     # Split text
     r_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50,
-        separators=["\n\n", "\n", "(?<=\. )", " ", ""]
+        chunk_size=700,
+        chunk_overlap=80,
+        separators=["\n\n", "\n", "(?<=\. )", " ", "  "]
     )
     splits = []
     for doc in merged_docs:
         splits.extend(r_splitter.split_text(doc))
 
- 
-
     # Create Embeddings
-    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
-
- 
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
     # Initialize Pinecone
-    pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_API_ENV"])
+    pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
     index_name = "python-index"
-
- 
 
     # Create Vector Database using Pinecone
     vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
 
- 
-
     return vectordb
 
+# ------------------------------------------ CONNECT TO VECTORDB  --------------------------------------------------- #
+def connect_vectordb():
+    # Create Embeddings
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
+    # Initialize Pinecone
+    pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
+    index_name = "python-index"
 
+    vectordb = Pinecone.from_existing_index(index_name=index_name, embedding=embeddings)
+    return vectordb
 
-# --------------------------------------------------------------------------------------------
-# --------------------------------------- Create Agent ---------------------------------------
+# -------------------------------------------- AGENT INSTANCE  ------------------------------------------------------ #
 def create_agent(vectordb, model, template):
     vectordb = vectordb
 
     # Create ChatOpenAI instance
-    llm = ChatOpenAI(model_name=model, temperature=0,openai_api_key=st.secrets["OPENAI_API_KEY"])
+    llm = ChatOpenAI(model_name=model, temperature=0,openai_api_key=OPENAI_API_KEY)
 
     # Build prompt
     template = template
@@ -147,17 +120,16 @@ def create_agent(vectordb, model, template):
     return qa_chain
 
 
-# --------------------------------------------------------------------------------------------
-# --------------------------------------- Run Agent ------------------------------------------
+# -------------------------------------------- RUN AGENT  ------------------------------------------------------ #
 def run_agent(agent, question):
     # Run agent
     result = agent({"question": question})
     return result["answer"]
-# --------------------------------------------------------------------------------------------
-# --------------------------------------- Define input variables -----------------------------------------
+
+# -------------------------------------------- VARIABLES   ------------------------------------------------------ #
 
 url = f"""https://www.csm.cat/"""
-vector_db = create_vectordb([url])
+vector_db = connect_vectordb()
 model = "gpt-4" #"gpt-3.5-turbo"
 template = """You are a helpful chatbot, named RSLT, designed to assist users with inquiries related to Collegi Sant Miquel, a reputable school in Barcelona. 
 You provide detailed responses based on the information available on the school's official website. 
@@ -171,30 +143,9 @@ Question: {question}
 Helpful Answer:"""
 
 agent = create_agent(vector_db, model, template)
-#----------------------------------------------------------------------------------------------------
 
-# --------------------------------------- Define user and passwords -----------------------------------------
-user_data = {
-    'ruben.tak@rslt.agency': 'ruben',
-    'gabriel.renno@rslt.agency': 'gabriel',
-    'nils.jennissen@rslt.agency': 'nils',
-    'onassis.nottage@rslt.agency': 'onassis',
-    'enriquepeto@yahoo.es': 'xR9p#2',
-    'jgonzalez@profe.csm.cat': 'lE0@#1',
-    'vgregorio@profe.csm.cat': "Rt5y#1",
-    'atomasa@profe.csm.cat': 'Kp2@l9',
-    'chidalgo@profe.csm.cat': 'Jf0g98',
-    'cmatellan@profe.csm.cat': 'Ls9@t3',
-    'scunillera@profe.csm.cat' : 'Gj4l&7',
-    'bvega@profe.csm.cat': 'Xk6p@2',
-}
-#----------------------------------------------------------------------------------------------------
 
-#-------------------------------------------- App --------------------------------------------------
-import streamlit as st
-import pandas as pd
-from datetime import datetime
-
+# -------------------------------------------- APP  ------------------------------------------------------ #
 # Load the conversation log
 conversation_log_file = 'conversation_log.csv'
 try:
@@ -215,7 +166,9 @@ def is_duplicate_conversation(email, question, answer):
                                               (conversation_log['System Answer'] == answer)]
     return not similar_conversations.empty
 
-# Display the main chat page
+
+# ----------------------------------------------- MAIN PAGE   ------------------------------------------------------- #
+
 def display_main_page(email):
     st.title("Col-legi Sant Miquel Chatbot")
     st.markdown("""
@@ -262,10 +215,10 @@ Fes-me qualsevol pregunta a la caixa de sota. I understand English, Catalan, Spa
 
     #st.markdown("---")  # Add a visual separator
     #st.write("*Your conversation Log:*")
-    
+
     # Reverse the order of the conversation log
     reversed_log = conversation_log[conversation_log['Email'] == email].iloc[::-1]
-    
+
     # Style for the conversation log
     conversation_style = """
         <style>
@@ -291,12 +244,27 @@ Fes-me qualsevol pregunta a la caixa de sota. I understand English, Catalan, Spa
         st.markdown(f"<div class='conversation-log'><span class='bot-message'>Chatbot:</span> {row['System Answer']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='conversation-log'><span class='user-message'>You:</span> {row['User Message']}</div>", unsafe_allow_html=True)
 
-
     # Save conversation log as a csv file
     conversation_log.to_csv(conversation_log_file, index=False)
 
-# Rest of the code remains the same
 
+# --------------------------------------------- USER LIST  ------------------------------------------------------ #
+user_data = {
+    'ruben.tak@rslt.agency': 'ruben',
+    'gabriel.renno@rslt.agency': 'gabriel',
+    'nils.jennissen@rslt.agency': 'nils',
+    'onassis.nottage@rslt.agency': 'onassis',
+    'enriquepeto@yahoo.es': 'xR9p#2',
+    'jgonzalez@profe.csm.cat': 'lE0@#1',
+    'vgregorio@profe.csm.cat': "Rt5y#1",
+    'atomasa@profe.csm.cat': 'Kp2@l9',
+    'chidalgo@profe.csm.cat': 'Jf0g98',
+    'cmatellan@profe.csm.cat': 'Ls9@t3',
+    'scunillera@profe.csm.cat' : 'Gj4l&7',
+    'bvega@profe.csm.cat': 'Xk6p@2',
+}
+
+# --------------------------------------------- STREAMLIT APP  ------------------------------------------------------ #
 # Streamlit app logic
 st.set_page_config(page_title="Col-legi Sant Miquel Chatbot", page_icon=":robot_face:")
 
@@ -305,11 +273,13 @@ if 'is_logged_in' not in st.session_state:
     st.session_state['is_logged_in'] = False
 
 if st.session_state['is_logged_in'] == False:
+
     st.title("Login")
     email = st.text_input("Email:")
     password = st.text_input("Password:", type="password")
 
-    if st.button("Login"):
+
+    if st.button("Submit"):
         if authenticate_user(email, password):
             st.session_state['is_logged_in'] = True
             st.session_state['email'] = email
@@ -317,6 +287,7 @@ if st.session_state['is_logged_in'] == False:
             display_main_page(email)
         else:
             st.error("Invalid email or password. Please try again.")
+
 
 elif 'email' in st.session_state:
     display_main_page(st.session_state['email'])

@@ -19,7 +19,7 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores import Pinecone
 
 # ----------------------------------------- CREDENTIALS TESTING  ---------------------------------------------------- #
-# from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV
+#from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
 PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]
@@ -129,7 +129,7 @@ def run_agent(agent, question):
 # -------------------------------------------- VARIABLES   ------------------------------------------------------ #
 
 url = f"""https://www.csm.cat/"""
-vector_db = connect_vectordb()
+vector_db = create_vectordb(url)
 model = "gpt-4" #"gpt-3.5-turbo"
 template = """You are a helpful chatbot, named RSLT, designed to assist users with inquiries related to Collegi Sant Miquel, a reputable school in Barcelona. 
 You provide detailed responses based on the information available on the school's official website. 
@@ -284,7 +284,7 @@ if st.session_state['is_logged_in'] == False:
             st.session_state['is_logged_in'] = True
             st.session_state['email'] = email
             st.empty()
-            display_main_page(email)
+
         else:
             st.error("Invalid email or password. Please try again.")
 

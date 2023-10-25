@@ -19,10 +19,10 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores import Pinecone
 
 # ----------------------------------------- CREDENTIALS TESTING  ---------------------------------------------------- #
-#from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
-PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]
+from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV
+#OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+#PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
+#PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]
 
 # --------------------------------------- CONNECT TO VECTORDATABASE  ------------------------------------------------ #
 def create_vectordb(url):
@@ -283,6 +283,7 @@ if st.session_state['is_logged_in'] == False:
             st.session_state['is_logged_in'] = True
             st.session_state['email'] = email
             st.empty()
+            display_main_page(st.session_state['email'])
 
         else:
             st.error("Invalid email or password. Please try again.")
@@ -290,6 +291,7 @@ if st.session_state['is_logged_in'] == False:
 
 elif 'email' in st.session_state:
     display_main_page(st.session_state['email'])
+
 
 else:
     st.error("Please log in to continue.")

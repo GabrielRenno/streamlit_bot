@@ -83,9 +83,8 @@ def connect_vectordb():
 
     # Initialize Pinecone
     pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
-    index_name = "python-index"
 
-    vectordb = Pinecone.from_existing_index(index_name=index_name, embedding=embeddings)
+    vectordb = Pinecone.from_existing_index(index_name ="python-index", embedding=embeddings)
     return vectordb
 
 # -------------------------------------------- AGENT INSTANCE  ------------------------------------------------------ #

@@ -53,6 +53,9 @@ file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     pickle.load(file)
 
+with open("hashed_pw.pkl", "rb") as file:
+    hashed_pw = pickle.load(file)
+
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 

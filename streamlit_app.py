@@ -1,5 +1,6 @@
 '''
-This is the current up-to-date version of the streamlit whatsapp interface
+To run this streamlit app locally, hashtag the credentials import from streamlit secrets out and uncomment the
+credentials import from credentials.py
 '''
 
 # ------------------------------------------------ IMPORT  ---------------------------------------------------------- #
@@ -27,10 +28,10 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 # -----------------------------------------  CREDENTIALS TESTING  ---------------------------------------------------- #
-#from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV        # Hashtag out when DEPLOYING
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]                                    # Hashtag out when TESTING
-PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]                                # Hashtag out when TESTING
-PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]                                # Hashtag out when TESTING
+from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV        # Hashtag out when DEPLOYING
+#OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]                                    # Hashtag out when TESTING
+#PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]                                # Hashtag out when TESTING
+#PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]                                # Hashtag out when TESTING
 
 
 # ------------------------------------------ CONNECT TO VECTORDB  --------------------------------------------------- #
@@ -191,9 +192,10 @@ elif authentication_status:
         st.session_state["chain"] = create_agent(st.session_state["vector_db"], model, template)
 
     if asked_button:
-        question_time = datetime.utcnow()
-        answer = run_agent(st.session_state["chain"], question)
-        answer_time = datetime.utcnow()
+        with st.spinner("Thinking..."):
+            question_time = datetime.utcnow()
+            answer = run_agent(st.session_state["chain"], question)
+            answer_time = datetime.utcnow()
 
 
         # Store the conversation in the log

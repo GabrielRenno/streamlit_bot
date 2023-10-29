@@ -1,0 +1,60 @@
+credentials:
+  usernames:
+    atomasa@profe.csm.cat:
+      email: atomasa@profe.csm.cat
+      name: atomasa@profe.csm.cat
+      password: $2b$12$YfrXf.lL.wQ3XS5qZj5QB.CZQQ.pp1W2rAurlcRU0rPInunYoj9LC
+    bvega@profe.csm.cat:
+      email: bvega@profe.csm.cat
+      name: bvega@profe.csm.cat
+      password: $2b$12$d0ZPteM0mbxUFxPK8J1i0e/6c39XEznCBrfHvVtT/ZFYKykVh1uie
+    chidalgo@profe.csm.cat:
+      email: chidalgo@profe.csm.cat
+      name: chidalgo@profe.csm.cat
+      password: $2b$12$HnHI.1JOXLylQhlqXVTGRex2T2A/QwuNIcIaqMZxDMwJBsalfMmva
+    cmatellan@profe.csm.cat:
+      email: cmatellan@profe.csm.cat
+      name: cmatellan@profe.csm.cat
+      password: $2b$12$ChuHMwMkO6kf1.uPcO6lTuujA76ad0Wa3OB5iQSteyKLHTg4WRBzO
+    enriquepeto@yahoo.es:
+      email: enriquepeto@yahoo.es
+      name: enriquepeto@yahoo.es
+      password: $2b$12$uRK02BpMZHF8REUqCKK6XeFXoh4c8djd0PIKVfd7cFB9/k/jgWu1S
+    gabriel.renno@rslt.agency:
+      email: gabriel.renno@rslt.agency
+      name: gabriel.renno@rslt.agency
+      password: $2b$12$urdYhriASqsWZFoFDYbTc.bDdgPKAAPNCEyGzj2urrnHXC6ZEoZJ6
+    jgonzalez@profe.csm.cat:
+      email: jgonzalez@profe.csm.cat
+      name: jgonzalez@profe.csm.cat
+      password: $2b$12$Qm9Lw4R3G.F43/39fsUSReKBoMRZ95rY6kbGrwY5YMtTNU/8UJYqq
+    nils.jennissen@rslt.agency:
+      email: nils.jennissen@rslt.agency
+      name: nils.jennissen@rslt.agency
+      password: $2b$12$LKniYWWRmXhUcB6Ab5vGFewkt8ZuYaFn1e2Gj0fCm5k0Pzni6HWxq
+    onassis.nottage@rslt.agency:
+      email: onassis.nottage@rslt.agency
+      name: onassis.nottage@rslt.agency
+      password: $2b$12$Mq./TuCXK4XiWCw9GT2UWOuWEvjvi1Fqpu.jyBkFbwx2Awut6j9lO
+    ruben.tak@rslt.agency:
+      email: ruben.tak@rslt.agency
+      name: ruben.tak@rslt.agency
+      password: $2b$12$isK2QveOQWjYcsEF1X2rZuvmaNpATCcJfNyLqW4MhPd2M57LeXURK
+    scunillera@profe.csm.cat:
+      email: scunillera@profe.csm.cat
+      name: scunillera@profe.csm.cat
+      password: $2b$12$iEd/ep9PLaOTGJkhI/Nh9uOEBoq3IN7ynpoZvlCOtH03hV/AbLHoS
+    vgregorio@profe.csm.cat:
+      email: vgregorio@profe.csm.cat
+      name: vgregorio@profe.csm.cat
+      password: $2b$12$CfvJTeCBXus5Ift3QwLjfe7iohC48rZwiZSJTW0WAIjNdPUWr6Eve
+
+
+cookie:
+  expiry_days: 30
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+    - ruben.tak@rslt.agency
+

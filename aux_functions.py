@@ -2,15 +2,21 @@
 from flask import Flask, request, jsonify
 from twilio.twiml.messaging_response import MessagingResponse
 from credentials import OPENAI_API_KEY, ASSEMBLYAI_API_KEY
-from dotenv import load_dotenv
-from twilio.rest import Client
+
 import requests
 import time
-from langchain.agents import initialize_agent
+
 from credentials import OPENAI_API_KEY
 import pandas as pd
 import datetime
 from dotenv import load_dotenv
+from datetime import datetime
+from langchain.embeddings.openai import OpenAIEmbeddings
+
+from langchain.document_loaders import WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.document_loaders import PyPDFLoader
+from langchain.vectorstores import Pinecone
 #---------------------------------------------------------------------------------------------------
 
 #-------------------------------------- Import Keys ------------------------------------------------
@@ -85,4 +91,54 @@ def data_collection(answer):
   
  #---------------------------------------------------------------------------------------------------
 
+# --------------------------------------- CONNECT TO VECTORDATABASE  ------------------------------------------------ #
+def create_vectordb(url):
+    # Load URL
+    loader = WebBaseLoader(url)
+    docs_url = loader.load()
 
+    # Initialize a list to store the PDFs
+    docs_pdf = []
+
+    # File names and corresponding loader instances
+    file_loader_pairs = [
+        ("./docs/08009636_Sant Miquel_Resum de l'EDC.pdf", None),
+        ("./docs/DM_Dir_NOF_CSM_14_set_2023.pdf", None),
+        ("./docs/DM_DIR_PEC_JUNY_23.pdf", None),
+        ("./docs/NOF_digital.pdf", None)
+    ]
+
+    # Load data for each file
+    for i, (file_name, _) in enumerate(file_loader_pairs):
+        loader = PyPDFLoader(file_name)
+        # Access the page_content attribute for each Document in the list
+        file_loader_pairs[i] = (file_name, [doc.page_content for doc in loader.load()])
+
+    # Extract data for merging
+    merged_docs = [content for _, data in file_loader_pairs for content in data if content]
+
+    # Ensure merged_docs is a list of strings
+    if not all(isinstance(doc, str) for doc in merged_docs):
+        raise ValueError("Merged documents should be a list of strings.")
+
+    # Split text
+    r_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=700,
+        chunk_overlap=80,
+        separators=["\n\n", "\n", "(?<=\. )", " ", "  "]
+    )
+    splits = []
+    for doc in merged_docs:
+        splits.extend(r_splitter.split_text(doc))
+
+    # Create Embeddings
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+
+    # Initialize Pinecone
+    pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
+    index_name = "python-index"
+
+    # Create Vector Database using Pinecone
+    vectordb = Pinecone.from_texts(texts=splits, embedding=embeddings, index_name=index_name)
+
+    return vectordb

@@ -27,10 +27,10 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 # -----------------------------------------  CREDENTIALS TESTING  ---------------------------------------------------- #
-from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV        # Hashtag out when DEPLOYING
-#OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]                                    # Hashtag out when TESTING
-#PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]                                # Hashtag out when TESTING
-#PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]                                # Hashtag out when TESTING
+#from credentials import OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_API_ENV        # Hashtag out when DEPLOYING
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]                                    # Hashtag out when TESTING
+PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]                                # Hashtag out when TESTING
+PINECONE_API_ENV = st.secrets["PINECONE_API_ENV"]                                # Hashtag out when TESTING
 
 
 # ------------------------------------------ CONNECT TO VECTORDB  --------------------------------------------------- #

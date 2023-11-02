@@ -1,0 +1,56 @@
+
+Política de cookies – Col·legi Sant Miquel
+Skip to content
+ClickeduMoodleBibliotecaAgendaCSM OnlineMcYadraCorreuEDC93 410 40 05csm@csm.catRosselló 175, BarcelonaMenú principalEscolaQui som?On som?Caràcter propiBreu història del Col·legiInstal·lacionsOferta educativaInfantilPrimàriaESOBatxilleratDepartament d’OrientacióServeisResultatsProjectesProjecte CreixemEscoles + sosteniblesBibliotecaEscola multilingüeBatxillerat Internacional dualDia a diaNotíciesReconeixementsRoba esportiva CSMLlibres i material escolarPastoralBlog de PastoralCampanya QuiloNotíciesLema 2023-24ObjectiusVocals de PastoralActivitatsCatequesi de Primera ComunióCatequesi de ConfirmacióExtraescolarsLlistat d’activitatsCasal d’AnglèsCasal d’InfantilCasal de Primària i d’ESOExalumnesAula de teatreAFA
+Política de cookiesCSM2020-11-13T11:17:59+01:00
+El Col·legi Sant Miquel sol·licita el seu permís per a demanar dades estadístiques anònimes durant la navegació en aquest lloc web, conforme al Reial decret llei 13/2012. Per a més informació consulti la Política de privacitat i la política de cookies. No hi ha res dolent en elles.
+POLÍTICA DE COOKIES
+Què és una cookie?
+Una cookie és un petit fitxer de lletres i xifres que es descarrega al seu ordinador en accedir a determinats llocs web. Les cookies permeten a un lloc web reconèixer el navegador d’un usuari i no contenen ni recopilen informació. Les cookies es fan servir en la publicitat basada en el comportament per identificar usuaris que comparteixen un determinat interès, de manera que els puguin oferir anuncis més rellevants.
+El nostre lloc web  www.csm.cat utilitza els següents tipus de cookies:
+Cookies tècniques: són aquelles que permeten a l’usuari la navegació a través d’una pàgina web, plataforma o aplicació, i l’ús de les diferents opcions o serveis que hi ha en ella, com ara el control de trànsit i la comunicació de dades, Identificar la sessió, accedir a parts d’accés restringit, realitzar el procés d’adquisició de serveis, fer la sol·licitud d’inscripció o participació en un esdeveniment, utilitzar elements de seguretat durant la navegació.
+Cookies de personalització: són aquelles que permeten a l’usuari accedir al servei amb algunes característiques de caràcter general predefinides en funció d’una sèrie de criteris en el terminal de l’usuari com ara l’idioma, el tipus de navegador a Mitjançant el qual accedeix al servei, la configuració regional des d’on accedeix al servei, etc.
+Cookies d’anàlisi: són aquelles que ben tractades per nosaltres o per tercers, ens permeten quantificar el nombre d’usuaris i així realitzar el mesurament i anàlisi estadística de la utilització que fan els usuaris del servei ofert. Per a això s’analitza la seva navegació a la nostra pàgina web amb la finalitat de millorar l’oferta d’informació o serveis que li oferim.
+Vostè pot permetre, bloquejar o eliminar les cookies instal·lades en el seu equip mitjançant la configuració de les opcions del navegador instal·lat en el seu ordinador, però en aquest cas no garantim el funcionament de la pàgina.
+Google Analytics
+Aquest lloc web utilitza Google Analytics, un servei analític de web prestat per Google, Inc. (“Google”). GoogleAnalyticsutilitza “cookies”, que són arxius de text ubicats a l’ordinador, per a l’ajuda del lloc web per analitzar com els usuaris utilitzen el lloc. La informació generada per la cookie en el lloc web (incloent l’adreça IP) serà transmesa i emmagatzemada per Google en els servidors dels EUA. En cas d’activació de l’anonimització d’IP, Google anonimitzarà / truncará l’últim octet de l’adreça IP per Estats de la Unió Europea, així com per a altres parts inclosos en l’acord sobre l’espai econòmic europeu. Només en casos excepcionals, els servidors de Google als EUA. I accepti la plena adreça d’IP. En el número de venedor del lloc web, Google utilitzarà aquesta informació per avaluar l’ús del lloc web, recopilant informes de l’activitat del lloc web per als operadors de llocs web i la classe de proveïdors de serveis WEB i l’ús d’Internet en el proveïdor  de la pàgina web. Google no associarà la seva adreça IP amb cap altre dada en possessió de Google.
+Podeu rebutjar l’ús de cookies mitjançant la selecció de la configuració del navegador. No obstant, si fa això, pot ser que no pugui utilitzar la plena funcionalitat d’aquest lloc web.
+A més, podeu evitar que Google recopili i utilitzi dades (cookies i adreces IP) baixant i instal·lant el connector del navegador disponible a:
+http://www.google.com/intl/es/policies/privacy/
+Es pot trobar més informació dels termes i condicions d’ús i la política de privacitat de les dades a http://www.Google.com/Analytics/terms/GB.html
+O a http://www.Google.com/intl/en_UK/Analytics/privacyoverview.html
+En aquest lloc web, el codi de  Google Analytics es complementa amb “gat.Anonymize Ip();” per garantir una recollida anónima d’IP (anomenat IP Masquerade).
+Com alternativa al complement del navegador, pot fer click en aquest enllaç per evitar la recopilació per Google analytics en aquest lloc web.
+Com desactivar les cookies?
+Tots els navegadors permeten fer canvis que permetin desactivar la configuració de les cookies. Aquests ajustaments es troben ubicats en les “opcions” o “preferències” del menú del seu navegador.
+En cas de bloquejar l’ús de ‘cookies’ al vostre navegador és possible que alguns serveis o funcionalitats de la pàgina web no estiguin disponibles.
+En alguns navegadors es poden configurar regles específiques per administrar ‘cookies’ per lloc web, cosa que ofereix un control més precís sobre la privacitat. Això significa que es poden inhabilitar ‘cookies’ de tots els llocs tret d’aquells en què es confiï.
+A continuació podrà trobar els links de cada navegador per desactivar les cookies seguint les instruccions:
+¿Com es poden administrar ‘cookies’ al navegador?
+L’usuari té l’opció de permetre, bloquejar o eliminar les ‘cookies’ instal·lades al seu equip mitjançant la configuració de les opcions del navegador instal·lat al seu terminal:
+Per ajustar els permisos relacionats amb les ‘cookies’ al navegador Google Chrome:
+Feu clic al menú situat a la barra d’eines.
+Seleccioneu Configuració.
+Feu clic a Mostar opcions avançades.
+A la secció ‘Privacidad’ feu clic al botó Configuració de contingut.
+A la secció de ‘Cookies’ es poden configurar les opcions.
+Més informació sobre Google Chrome
+Per ajustar els permisos relacionats amb les ‘cookies’ al navegador Mozilla Firefox:
+A la part superior de la finestra de Firefox feu clic al menú Eines.
+Seleccioneu Opcions.
+Seleccioneu el panell Privacitat.
+A l’opció Firefox podreu escollir Usar una configuració personalitzada per a l’historial per configurar les opcions.
+Més informació sobre Mozilla Firefox
+Per ajustar els permisos relacionats amb les ‘cookies’ al navegador Internet Explorer 9:
+A la part superior de la finestra d’Internet Explorer feu clic al menú Eines.
+Seleccioneu la pestanya de Seguretat i utilitzeu l’opció Eliminar l’historial d’exploració per eliminar les ‘cookies’. Activeu la casella ‘Cookies‘ i, a continuació, feu clic a Eliminar.
+Seleccioneu la pestanya de Seguretat i accediu a Configuració. Moveu el control lliscant totalment cap amunt per bloquejar totes les ‘cookies’ o totalment cap avall per permetre totes les ‘cookies’. Després d’això, feu clic a Acceptar.
+Més informació sobre Internet Explorer 9
+Per ajustar els permisos relacionats amb les ‘cookies’ al navegador Safari:
+Més informació sobre Safari
+COL·LEGI SANT MIQUEL
+Missioners del Sagrat Cor
+Rosselló, 175
+08036 BARCELONA 
+		Col·legi Sant Miquel  - Rosselló, 175 08036 Barcelona - Tel.: 934104005 - csm@csm.cat  - Avís legal
+*Algunes de les fotografies en aquesta web van ser preses abans de la pandèmia COVID, per aquesta raó les persones que es mostren en elles van desproveïdes de mascareta o no mantenen una distància de seguretat.	
